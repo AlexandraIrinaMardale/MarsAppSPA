@@ -3,7 +3,17 @@ import React, {useEffect, useState, useContext} from 'react';
 import logoNasa from './NASA_seal.svg.png';
 import './App.css';
 
-const CountContext = React.createContext({count: 0});
+interface Count {
+    count: number,
+    setCount: (val: number) => void
+};
+
+const defaultState = {
+    count: 0,
+    setCount: () => 0
+};
+
+const CountContext = React.createContext<Count>(defaultState);
 
 
 function App() {
@@ -73,21 +83,21 @@ function Comp1 () {
 
     return (
         <CountContext.Provider value = {{
-            count}}>
+            count, setCount}}>
             <div>
-                <Comp2 setCount={setCount}/>
+                <Comp2 />
                 <Comp3 />
             </div>
         </CountContext.Provider>
     )
 }
 
-function Comp2 (props: { setCount: (val: number) => void}) {
+function Comp2 () {
     const count = useContext(CountContext);
 
     return (
         <div>
-            <button onClick={() => props.setCount(count.count + 1)}>
+            <button onClick={() => count.setCount(count.count + 1)}>
                 Click me
             </button>
 
